@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose-deployment.yaml
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: springboot-app
+  name: springboot-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: springboot-app
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose-deployment.yaml
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: springboot-app
+    spec:
+      containers:
+        - env:
+            - name: MYSQL_DATABASE
+              value: quote-application
+            - name: MYSQL_HOST
+              value: mysql-db
+            - name: MYSQL_PASSWORD
+              value: password
+            - name: MYSQL_USER
+              value: root
+          image: springboot-app
+          name: springboot-app
+          ports:
+            - containerPort: 8080
+          resources: {}
+      restartPolicy: Always
+status: {}

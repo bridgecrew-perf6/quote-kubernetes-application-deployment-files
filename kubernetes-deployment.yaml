@@ -1,0 +1,103 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: application-load-balancer-service
+spec:
+  ports:
+  - name: application-load-balancer-service-port-name
+    port: 4200
+    protocol: TCP
+    targetPort: 4200
+  selector:
+    app: application-web-pod
+  type: LoadBalancer
+status:
+  loadBalancer: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: application-web-service
+spec:
+  selector:
+    app: application-web-pod
+  ports:
+  - name: application-web-service-port-name
+    protocol: TCP
+    port: 4200
+    targetPort: 4200
+  type: ClusterIP
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application-web-deployment
+spec:
+  selector:
+    matchLabels:
+      app: application-web-pod
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: application-web-pod
+    spec:
+      containers:
+        - name: application-web-container
+          image: gcr.io/bionic-trilogy-298608/quote-application-web
+          lifecycle:
+              preStop:
+                  exec:
+                      command: ["usr/sbin/ngnix", "-s", "quit"]
+          ports:
+          - containerPort: 4200
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: application-api-service
+  name: application-api-service
+spec:
+  ports:
+  - name: application-api-service
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: application-api-pod
+  type: ClusterIP
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: application-api-deployment
+  name: application-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: application-api-pod
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: application-api-pod
+    spec:
+      containers:
+      - image: gcr.io/bionic-trilogy-298608/quote-application-api
+        name: application-api-container
+        ports:
+            - containerPort: 8080
+        resources: {}
+status: {}
+

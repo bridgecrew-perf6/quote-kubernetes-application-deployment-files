@@ -11,7 +11,7 @@ services:
     #Environment variable for password and default database
     environment:
       MYSQL_ROOT_PASSWORD: 'password'
-      MYSQL_DATABASE: 'crud-application'
+      MYSQL_DATABASE: 'quote-application'
     ports:
       - 3306:3306 #Forwars the exposed port 3306 on the container to port 3306 on the host machine
     volumes:
@@ -24,27 +24,31 @@ services:
     container_name: php-my-admin
     ports:
       - 8081:80 #Forwars the exposed port 80 on the container to port 8081 on the host machine
+    environment:        
+      PMA_HOST: mysql-db
 
   #Back-end Spring Boot Application
   springboot-app:
     #The docker file in BE, build the jar and provides the docker image.
-    build: ../BE
+    build: ../quote-application-api
     container_name: springboot-app
     #Environment variable for Spring Boot Application.
     environment:
       MYSQL_HOST: 'mysql-db'
       MYSQL_USER: 'root'
       MYSQL_PASSWORD: 'password'
-      MYSQL_DATABASE: 'crud-application'
+      MYSQL_DATABASE: 'quote-application'
     ports:
       - 8080:8080 #Forwars the exposed port 8080 on the container to port 8080 on the host machine
     links:
+      - mysql-db
+    depends_on:
       - mysql-db
 
   #Front-end Angular Application
   angular-app:
     #The docker file in FE, builds and provides the docker image.
-    build: ../FE
+    build: ../quote-application-web
     container_name: angular-app
     ports:
       - 4200:4200 #Forwars the exposed port 4200 on the container to port 4200 on the host machine
