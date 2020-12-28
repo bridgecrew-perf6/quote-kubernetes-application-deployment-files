@@ -1,7 +1,7 @@
 
 ![alt text](https://cdn-images-1.medium.com/max/1200/1*1BF_eIkV6wkuqsziZ_hf7Q.png)
 
-# Stateful Kubernetes CRUD Application Deployment File
+# Stateful Kubernetes CRUD Application Deployment Files
 
 This repository is a part of a Medium Post named  **### How to Deploy a Stateful CRUD Web Application to Minikube(Local Cluster) and Google Cloud Kubernetes Engine(GKE)**. It is about creating a Stateful application and deploying it both Minikube(Local Cluster) and Google Cloud Kubernetes Engine(GKE).
 
