@@ -21,6 +21,9 @@ There are multiple deployment files in this repository. You can find what they a
 ***!!IMPORTANT***
 This deployment file uses Google Cloud's private container registry. So you **CAN NOT**  access the docker images. But you can build your own images by using the repositories that I gave you.  There are configuration differences related to local MySql usage or  Google Cloud SQL usage. To make these changes, you should only switch branches at the **backend**. Therefore please check the [quote-kubernetes-application-api](https://github.com/emreozcan3320/quote-kubernetes-application-api) repository. After that, you have to update image sources on kubernetes-deployment.yaml according to your image address.
 
+Also if you want to download Frontend and Backend which are used in the deployment just run
+`git submodule update --init --recursive`.
+
 If all configuration is done you just need to run;
 `kubectl apply -f kubernetes-deployment.yaml`
 you can check deployment status by getting information about all objects like
